@@ -1,0 +1,7 @@
+*.txt
+*.class
+DepthFirstPaths.java
+DepthFirstSearch.java
+Edge.java
+EdgeWeightedGraph.java
+Graph.java
