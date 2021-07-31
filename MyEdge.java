@@ -1,3 +1,7 @@
+// Author: Tait Kline
+// Note that I used the author's edge code as a starting point for this class
+// The edge is directional and weighted on both distance and cost
+
 public class MyEdge
 {
      int v;          // one vertex in edge
@@ -69,5 +73,7 @@ public class MyEdge
          String s = v + " --> " + w;
          return s;
      }
+
+   
 
 }

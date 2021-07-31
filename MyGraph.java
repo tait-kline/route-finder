@@ -1,3 +1,8 @@
+// Author: Tait Kline
+// Note that I used the author's graph code as a starting point for this class
+// This graph is directional and contains the findPaths() methos that is used in the main class
+// to find all paths in the graph that meet the argument criteria
+
 import java.util.LinkedList;
 import java.util.Scanner;
 

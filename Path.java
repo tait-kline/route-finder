@@ -1,3 +1,7 @@
+// Author: Tait Kline
+// This class is my attempt at an object oriented approach to comparable paths
+// This class contains three comparator classes that can be used to sort paths based on hops, distance, and cost
+
 import java.util.*;
 
 public class Path 
@@ -26,6 +30,7 @@ public class Path
             
         this.totalHops = p.totalHops;
         this.totalCost = p.totalCost;
+        this.totalDistance = p.totalDistance;
 
     }
 
@@ -59,6 +64,23 @@ public class Path
     public int getDistance()
     {
         return totalDistance;
+    }
+
+    public String toString(String[] names)
+    {
+        StringBuilder sb = new StringBuilder(new String("Hops: " + totalHops + " Cost: " + totalCost + 
+                                        " Distance: " + totalDistance + "\n"));
+        
+        // get string representaion of the edges in the path
+        for (MyEdge e : path) 
+        {
+            sb.append("\t" + names[e.from()] + " -> ");
+            sb.append(names[e.to()] + " ");
+            sb.append("cost: " + e.cost + " distance: " + e.distance + "\n");
+
+        }
+
+        return sb.toString();
     }
 
     public static LinkedList<Path> sortHops(LinkedList<Path> list)
