@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class MyGraph 
@@ -5,6 +6,8 @@ public class MyGraph
     private final int V;
     private int E;
     private Bag<MyEdge>[] adj;
+    private LinkedList<Path> paths;
+    private boolean[] marked;    
     
    /**
      * Create an empty edge-weighted graph with V vertices.
@@ -44,6 +47,48 @@ public class MyGraph
             addEdge(e);
         }
         
+    }
+
+    public LinkedList<Path> findPaths(int start, int destination, int maxHops, int maxCost)
+    {
+        Path p = new Path();
+        paths = new LinkedList<>();
+        marked = new boolean[V];
+        recFindPaths(start, destination, maxHops, maxCost, p);
+        return paths;
+    }
+
+    private void recFindPaths(int currVertex, int destination, int maxHops, int maxCost, Path currPath)
+    {
+       
+        // base case, found valid path
+        if (currVertex == destination)
+        {
+            // store copy of current path in path list
+            Path foundPath = new Path(currPath);
+            paths.add(foundPath);
+            return;
+        }
+        
+        marked[currVertex] = true;
+        // loop through curr vertex adj list
+        for (MyEdge e : adj(currVertex))
+        {
+            // if next vertex has not been visited
+            if (!marked[e.to()])
+                // if next vertex will not exceed maximum hops and cost
+                if(((currPath.getCost() + e.cost) <= maxCost) && ((currPath.getHops() + 1) <= maxHops))
+                {
+                    // add edge to path
+                    currPath.addEdge(e);
+                    // recurse with next vertex
+                    recFindPaths(e.to(), destination, maxHops, maxCost, currPath);
+                    currPath.removeEdge();
+                }
+   
+        }
+        marked[currVertex] = false;
+       
     }
 
    /**
@@ -114,77 +159,7 @@ public class MyGraph
         return s.toString();
     }
 
-   public class MyEdge
-   {
-        int v;          // one vertex in edge
-        int w;          // other vertex in edge
-        int distance;
-        double cost;
+   
 
-        /**
-        * Create an edge between v and w with given weight.
-        */
-        public MyEdge(int v, int w, int distance, double cost) {
-            this.v = v;
-            this.w = w;
-            this.distance = distance;
-            this.cost = cost;
-        }
-
-        /**
-        * Return the distance of this edge.
-        */
-        public double distance() {
-            return distance;
-        }
-
-
-        /**
-        * Return the cost of this edge.
-        */
-        public double cost() {
-            return cost;
-        }
-
-        /**
-        * Return vertex edge is coming from
-        */
-        public int from() {
-            return v;
-        }
-
-        /**
-        * Return vertex edge is going to
-        */
-        public int to() {
-           return w;
-        }
-
-        /**
-        * Compare edges by distance.
-        */
-        public int compareDistance(MyEdge that) {
-            if      (this.distance() < that.distance()) return -1;
-            else if (this.distance() > that.distance()) return +1;
-            else                                        return  0;
-        }
-
-         /**
-        * Compare edges by distance.
-        */
-        public int compareCost(MyEdge that) {
-            if      (this.cost() < that.cost()) return -1;
-            else if (this.cost() > that.cost()) return +1;
-            else                                return  0;
-        }
-
-        /**
-        * Return a string representation of this edge.
-        */
-        public String toString() {
-            String s = v + " --> " + w + " cost: " + cost + " distance: " + distance;
-            return s;
-        }
-
-   }
+   
 }
